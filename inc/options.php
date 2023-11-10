@@ -12,7 +12,7 @@ function pmc_create_options_page()
     }
 
     add_submenu_page(
-        'options-general.php',
+        'tools.php',
         PMC_PLUGIN_NAME,
         PMC_PLUGIN_NAME,
         'manage_options',
