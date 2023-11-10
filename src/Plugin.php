@@ -22,11 +22,12 @@ class Plugin
 
         $startTime = microtime(true);
 
-        $duplicatedPostIdsWithCount = LazyCollection::make($wpdb->get_results('SELECT post_id,meta_key,meta_value,COUNT(post_id)AS count FROM wp_owc0h41lg8_postmeta GROUP BY meta_value,post_id,meta_key HAVING(count>1) ORDER BY COUNT(post_id)DESC'));
+        $duplicatedPostIdsWithCount = LazyCollection::make($wpdb->get_results("SELECT post_id,meta_key,count(*)FROM {$wpdb->postmeta} GROUP BY post_id,meta_key HAVING count(*)>1 ORDER BY COUNT(*)DESC;"));
         $rows = $duplicatedPostIdsWithCount->map(function ($row) {
             return [
                 'post_id' => (int) $row->post_id,
-                'count' => (int) $row->count,
+                'meta_key' => $row->meta_key,
+                'count' => (int) $row->{'count(*)'},
             ];
         });
 
