@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\LazyCollection;
+
 defined('ABSPATH') or exit;
 
 /**
@@ -34,3 +36,72 @@ function pmc_register_options()
 }
 
 add_action('admin_init', 'pmc_register_options');
+
+/**
+ * Check if we're doing a settings page form request
+ */
+function pmc_is_settings_page_form_request(string $formField)
+{
+    global $pagenow;
+    $page = $_GET['page'] ?? null;
+
+    return $pagenow == 'tools.php' && $page == 'pmc-settings' && isset($_POST[$formField]);
+}
+
+/**
+ * Handle form request to count duplicate meta
+ */
+function pmc_form_request_count_duplicate_post_meta()
+{
+    $fieldName = 'count_duplicate_meta';
+
+    if (! pmc_is_settings_page_form_request($fieldName)) {
+        return;
+    }
+
+    global $wpdb;
+
+    try {
+        pmc_plugin()->calculateDuplicateMeta($wpdb);
+    } catch (Exception $e) {
+        error_log($e);
+
+        pmc_plugin()->logger()->general()->error($e);
+    }
+
+    wp_redirect(remove_query_arg($fieldName));
+    exit;
+}
+
+add_action('admin_init', 'pmc_form_request_count_duplicate_post_meta');
+
+/**
+ * Handle form request to count duplicate meta
+ */
+function pmc_form_request_delete_duplicate_post_meta()
+{
+    $fieldName = 'delete_duplicate_meta';
+
+    if (! pmc_is_settings_page_form_request($fieldName)) {
+        return;
+    }
+
+    global $wpdb;
+
+    $rows = LazyCollection::make(get_option('pmc_multiple_meta_rows', []));
+
+    if ($rows->isNotEmpty()) {
+        try {
+            //
+        } catch (Exception $e) {
+            error_log($e);
+
+            pmc_plugin()->logger()->general()->error($e);
+        }
+    }
+
+    wp_redirect(remove_query_arg($fieldName));
+    exit;
+}
+
+add_action('admin_init', 'pmc_form_request_delete_duplicate_post_meta');

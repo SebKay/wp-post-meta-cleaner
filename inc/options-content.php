@@ -1,5 +1,7 @@
 <?php
 defined('ABSPATH') or exit;
+
+$currentDuplicateCount = get_option('pmc_duplicate_meta_count', 0);
 ?>
 
 <div class="wrap">
@@ -7,61 +9,35 @@ defined('ABSPATH') or exit;
         <?php echo PMC_PLUGIN_NAME; ?>
     </h1>
 
-    <form method="post" action="options.php">
-        <?php settings_fields('pmc-options'); ?>
-        <?php do_settings_sections('pmc-options'); ?>
-
+    <form method="post" style="margin-top: 30px;padding: 5px 20px 0px 20px;background-color: rgba(0,0,0,.07);">
         <h2 class="title">
-            <?php _e('API', 'post-meta-cleaner'); ?>
+            <?php _e('Count Duplicate Meta', 'post-meta-cleaner'); ?>
         </h2>
 
-        <table class="form-table">
-            <tr valign="top">
-                <th scope="row">
-                    <?php _e('Text', 'post-meta-cleaner'); ?>
-                </th>
-                <td>
-                    <input type="text" name="pmc_text_option" value="<?php echo esc_attr(get_option('pmc_text_option')); ?>">
-                </td>
-            </tr>
+        <p>
+            <?php echo sprintf(__('Last count: %s', 'post-meta-cleaner'), number_format($currentDuplicateCount)); ?>
+        </p>
 
-            <tr valign="top">
-                <th scope="row">
-                    <?php _e('Radio', 'post-meta-cleaner'); ?>
-                </th>
-                <td>
-                    <label>
-                        <input type="radio" name="pmc_radio_option" value="0" <?php checked(0, esc_attr(get_option('pmc_radio_option', 0))); ?>>
-                        <span>
-                            No
-                        </span>
-                    </label>
-                    <br><br>
-                    <label>
-                        <input type="radio" name="pmc_radio_option" value="1" <?php checked(1, esc_attr(get_option('pmc_radio_option', 0))); ?>>
-                        <span>
-                            Yes
-                        </span>
-                    </label>
-                </td>
-            </tr>
+        <input type="hidden" name="count_duplicate_meta" value="true">
+        <?php submit_button('Count'); ?>
+    </form>
 
-            <tr valign="top">
-                <th scope="row">
-                    <?php _e('Select', 'post-meta-cleaner'); ?>
-                </th>
-                <td>
-                    <select name="pmc_select_option">
-                        <option value="1" <?php selected(get_option('pmc_select_option'), 1); ?>>1</option>
-                        <option value="10" <?php selected(get_option('pmc_select_option'), 10); ?>>10</option>
-                        <option value="25" <?php selected(get_option('pmc_select_option'), 25); ?>>25</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
+    <form method="post" style="margin-top: 30px;padding: 5px 20px 0px 20px;background-color: rgba(0,0,0,.07);">
+        <h2 class="title">
+            <?php _e('Delete Duplicate Meta', 'post-meta-cleaner'); ?>
+        </h2>
 
-        <hr>
+        <p>
+            <?php _e('This will delete all duplicate meta from the database.', 'post-meta-cleaner'); ?>
+        </p>
 
-        <?php submit_button(); ?>
+        <p>
+            <strong>
+                <?php _e('This action cannot be undone. Please take a backup first.', 'post-meta-cleaner'); ?>
+            </strong>
+        </p>
+
+        <input type="hidden" name="delete_duplicate_meta" value="true">
+        <?php submit_button('Delete'); ?>
     </form>
 </div>
