@@ -1,6 +1,6 @@
 <?php
 
-namespace WPT\Concerns;
+namespace PMC\Concerns;
 
 trait Instanceable
 {

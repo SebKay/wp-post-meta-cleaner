@@ -1,6 +1,6 @@
 <?php
 
-namespace WPT;
+namespace PMC;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
@@ -23,9 +23,9 @@ class Logger
 
     public function general(): MonologLogger
     {
-        return $this->general ??= (new MonologLogger('WordPress Plugin Template - General'))->pushHandler(
+        return $this->general ??= (new MonologLogger('Post Meta Cleaner - General'))->pushHandler(
             (new RotatingFileHandler(
-                \WPT_LOGS.'/general/general.log',
+                \PMC_LOGS.'/general/general.log',
                 Level::Debug->value
             ))->setFormatter($this->formatter)
         );

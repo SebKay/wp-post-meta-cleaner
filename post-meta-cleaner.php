@@ -4,7 +4,7 @@
     Description: A WordPress plugin for removing duplicate post meta.
     Version: 1.0.0
     Requires PHP: 8.2
-    Text Domain: wp-plugin-template
+    Text Domain: post-meta-cleaner
     Author: Seb Kay
     Author URI: http://sebkay.com
     WC requires at least: 6.0.0
@@ -13,21 +13,21 @@
 
 defined('ABSPATH') or exit;
 
-define('WPT_PLUGIN_NAME', 'WordPress Plugin Template');
-define('WPT_PLUGIN_SLUG', 'wpt');
-define('WPT_DIR_PATH', plugin_dir_path(__FILE__));
-define('WPT_WP_ROOT', WPT_DIR_PATH.'/../../../');
-define('WPT_LOGS', WPT_DIR_PATH.'/wpt-logs');
+define('PMC_PLUGIN_NAME', 'Post Meta Cleaner');
+define('PMC_PLUGIN_SLUG', 'pmc');
+define('PMC_DIR_PATH', plugin_dir_path(__FILE__));
+define('PMC_WP_ROOT', PMC_DIR_PATH.'/../../../');
+define('PMC_LOGS', PMC_DIR_PATH.'/pmc-logs');
 
-if (file_exists(WPT_DIR_PATH.'/vendor/autoload.php')) {
-    require_once WPT_DIR_PATH.'/vendor/autoload.php';
+if (file_exists(PMC_DIR_PATH.'/vendor/autoload.php')) {
+    require_once PMC_DIR_PATH.'/vendor/autoload.php';
 } else {
     return;
 }
 
-function wpt_plugin()
+function pmc_plugin()
 {
-    return WPT\Plugin::instance();
+    return PMC\Plugin::instance();
 }
 
-wpt_plugin()->run();
+pmc_plugin()->run();

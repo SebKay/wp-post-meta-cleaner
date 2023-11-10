@@ -1,8 +1,8 @@
 <?php
 
-namespace WPT;
+namespace PMC;
 
-use WPT\Concerns\Instanceable;
+use PMC\Concerns\Instanceable;
 
 class Plugin
 {
@@ -18,7 +18,7 @@ class Plugin
     public function run(): void
     {
         add_action('plugins_loaded', function () {
-            require_once WPT_DIR_PATH.'/inc/options.php';
+            require_once PMC_DIR_PATH.'/inc/options.php';
         }, 10);
     }
 }
