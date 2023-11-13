@@ -1,2 +1,3 @@
-# wp-post-meta-cleaner
+# Post Meta Cleaner
+
 A WordPress plugin for removing duplicate post meta.

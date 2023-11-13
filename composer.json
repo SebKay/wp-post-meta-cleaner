@@ -1,0 +1,40 @@
+{
+    "name": "sebkay/wordpress-plugin-template",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Seb Kay",
+            "email": "seb@sebkay.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "PMC\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "illuminate/collections": "^10.28",
+        "monolog/monolog": "^3.4"
+    },
+    "require-dev": {
+        "spatie/ray": "^1.39",
+        "php-stubs/wordpress-stubs": "^6.3",
+        "laravel/pint": "^1.13"
+    },
+    "scripts": {
+        "build:dev": [
+            "composer install"
+        ],
+        "build:prod": [
+            "composer install --no-dev"
+        ],
+        "lint": [
+            "./vendor/bin/pint --test -v"
+        ],
+        "fix": [
+            "./vendor/bin/pint"
+        ]
+    }
+}
