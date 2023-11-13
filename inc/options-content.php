@@ -38,6 +38,15 @@ $currentDuplicateCount = get_option('pmc_duplicate_meta_count', 0);
         </p>
 
         <input type="hidden" name="delete_duplicate_meta" value="true">
-        <?php submit_button('Delete'); ?>
+
+        <?php if ($currentDuplicateCount == 0) { ?>
+            <p class="submit">
+                <button class="button button-primary" disabled>
+                    <?php _e('Delete', 'post-meta-cleaner'); ?>
+                </button>
+            </p>
+        <?php } else { ?>
+            <?php submit_button('Delete'); ?>
+        <?php } ?>
     </form>
 </div>
