@@ -53,9 +53,7 @@ function pmc_is_settings_page_form_request(string $formField)
  */
 function pmc_form_request_count_duplicate_post_meta()
 {
-    $fieldName = 'count_duplicate_meta';
-
-    if (! pmc_is_settings_page_form_request($fieldName)) {
+    if (! pmc_is_settings_page_form_request('count_duplicate_meta')) {
         return;
     }
 
@@ -67,7 +65,7 @@ function pmc_form_request_count_duplicate_post_meta()
         pmc_plugin()->logger()->general()->error($e);
     }
 
-    wp_redirect(remove_query_arg($fieldName));
+    wp_redirect(remove_query_arg(''));
     exit;
 }
 
@@ -78,9 +76,7 @@ add_action('admin_init', 'pmc_form_request_count_duplicate_post_meta');
  */
 function pmc_form_request_delete_duplicate_post_meta()
 {
-    $fieldName = 'delete_duplicate_meta';
-
-    if (! pmc_is_settings_page_form_request($fieldName)) {
+    if (! pmc_is_settings_page_form_request('delete_duplicate_meta')) {
         return;
     }
 
@@ -88,8 +84,6 @@ function pmc_form_request_delete_duplicate_post_meta()
 
     if ($rows->isNotEmpty()) {
         try {
-            $startTime = microtime(true);
-
             $rows->each(function ($row) {
                 $deletableRows = pmc_plugin()->getDuplicateRows($row['post_id'], $row['meta_key']);
 
@@ -97,9 +91,6 @@ function pmc_form_request_delete_duplicate_post_meta()
                     pmc_plugin()->deleteDuplicateRows($deletableRows);
                 }
             });
-
-            $endTime = microtime(true);
-            ray()->green('Deleted duplicate meta in '.($endTime - $startTime).' seconds');
 
             pmc_plugin()->calculateDuplicateMeta();
         } catch (Exception $e) {
@@ -109,7 +100,7 @@ function pmc_form_request_delete_duplicate_post_meta()
         }
     }
 
-    wp_redirect(remove_query_arg($fieldName));
+    wp_redirect(remove_query_arg(''));
     exit;
 }
 
