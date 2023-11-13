@@ -59,10 +59,8 @@ function pmc_form_request_count_duplicate_post_meta()
         return;
     }
 
-    global $wpdb;
-
     try {
-        pmc_plugin()->calculateDuplicateMeta($wpdb);
+        pmc_plugin()->calculateDuplicateMeta();
     } catch (Exception $e) {
         error_log($e);
 
@@ -86,13 +84,24 @@ function pmc_form_request_delete_duplicate_post_meta()
         return;
     }
 
-    global $wpdb;
-
     $rows = LazyCollection::make(get_option('pmc_multiple_meta_rows', []));
 
     if ($rows->isNotEmpty()) {
         try {
-            //
+            $startTime = microtime(true);
+
+            $rows->each(function ($row) {
+                $deletableRows = pmc_plugin()->getDuplicateRows($row['post_id'], $row['meta_key']);
+
+                if ($deletableRows->isNotEmpty()) {
+                    pmc_plugin()->deleteDuplicateRows($deletableRows);
+                }
+            });
+
+            $endTime = microtime(true);
+            ray()->green('Deleted duplicate meta in '.($endTime - $startTime).' seconds');
+
+            pmc_plugin()->calculateDuplicateMeta();
         } catch (Exception $e) {
             error_log($e);
 
